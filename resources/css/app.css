@@ -1,0 +1,63 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+body {
+    background: #f8f9fa;
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.sidebar {
+    width: 220px;
+    background: #17546b;
+    color: #fff;
+    min-height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 30px 0 0 0;
+}
+
+.sidebar h2 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    margin-left: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-left: 20px;
+}
+
+.sidebar ul li {
+    margin-bottom: 18px;
+}
+
+.sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.sidebar ul li a.active,
+.sidebar ul li a:hover {
+    color: #e2e2e2;
+    text-decoration: underline;
+}
+
+.main-content {
+    margin-left: 240px;
+    padding: 40px 30px;
+}
