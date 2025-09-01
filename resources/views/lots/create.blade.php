@@ -1,34 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
-    <h2 class="fw-bold mb-4" style="font-family: 'Montserrat', Arial, sans-serif;">Ajouter un nouveau lot</h2>
-    <div class="card shadow-sm rounded-4 mb-5">
-        <div class="card-body">
-            @if ($errors->any())
-                <div class="alert alert-danger rounded-3">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            <form action="{{ route('lots.store') }}" method="POST" class="row g-3 align-items-center">
-                @csrf
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Nom du lot</label>
-                    <input type="text" name="nom" value="{{ old('nom') }}" required class="form-control rounded-pill">
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Description</label>
-                    <input type="text" name="description" value="{{ old('description') }}" class="form-control rounded-pill">
-                </div>
-                <div class="col-12 text-end mt-3">
-                    <button type="submit" class="btn btn-primary rounded-pill px-4">Ajouter</button>
-                </div>
-            </form>
+<div class="container mt-4">
+    <h2>Ajouter un Lot</h2>
+    <a href="{{ route('lots.index') }}" class="btn btn-secondary mb-3">Retour</a>
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
         </div>
-    </div>
+    @endif
+
+    <form action="{{ route('lots.store') }}" method="POST">
+        @csrf
+        <div class="mb-3">
+            <label for="nom" class="form-label">Nom</label>
+            <input type="text" name="nom" class="form-control" value="{{ old('nom') }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="description" class="form-control">{{ old('description') }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="devis_id" class="form-label">Devis</label>
+            <select name="devis_id" class="form-control">
+                <option value="">-- Choisir un devis --</option>
+                @foreach($devis as $devi)
+                    <option value="{{ $devi->id }}" {{ old('devis_id') == $devi->id ? 'selected' : '' }}>
+                        {{ $devi->client_nom }} - {{ $devi->id }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <button class="btn btn-success">Ajouter</button>
+    </form>
 </div>
 @endsection

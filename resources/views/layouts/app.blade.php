@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Lots</title>
+    <title>Gestion CRM</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
     <style>
         body {
             background: #f4f6fa;
@@ -55,9 +58,10 @@
             text-decoration: none;
             font-size: 1.08rem;
             font-weight: 500;
-            padding: 2px 0;
+            padding: 2px 8px;
             border-radius: 8px;
             transition: background 0.2s, color 0.2s;
+            display: block;
         }
         .sidebar ul li a.active,
         .sidebar ul li a:hover {
@@ -74,40 +78,74 @@
     </style>
 </head>
 <body>
+    <!-- Sidebar -->
     <div class="sidebar">
         <h2>Module CRM</h2>
         <ul>
             <li>
-                <span>Paramétrage</span>
+               
                 <ul class="submenu">
+                     <span>Paramétrage</span>
                     <li>
                         <a href="{{ route('lots.index') }}" class="{{ request()->routeIs('lots.*') ? 'active' : '' }}">
-                            Lot
+                            Lots
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('sous_lots.index') }}" class="{{ request()->routeIs('sous_lots.*') ? 'active' : '' }}">
-                            Sous Lot
+                            Sous Lots
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('articles.index') }}" class="{{ request()->routeIs('articles.*') ? 'active' : '' }}">
-                            Article
+                            Articles
                         </a>
                     </li>
+   <li>
+     <span>ventes</span>
+                    <a href="{{route('devis.index')}}" class="{{ request()->routeIs('devis.*') ? 'active' : '' }}">
+                        Devis
+                    </a>
+                </li>
+                   <li>
+                    <a href="{{ route('bl.create') }}" 
+                class="nav-link {{ request()->routeIs('bl.*') ? 'active' : '' }}">
+                    <i class="fas fa-truck-loading"></i> Bons de Livraison
+                </a>
+                </li>
+                <li>
+                    <a href="{{ route('factures.index') }}" 
+                class="nav-link {{ request()->routeIs('factures.*') ? 'active' : '' }}">
+                    <i class="fas fa-file-invoice-dollar"></i> Factures
+                </a>
+                </li>
+                <li>
+                    <a href="{{ route('paiements.index') }}" 
+                class="nav-link {{ request()->routeIs('paiements.*') ? 'active' : '' }}">
+                    <i class="fas fa-money-bill-wave"></i> Paiements
+                </a>
+                </li>
+                
                 </ul>
-            </li>
+                 </li>
+            
         </ul>
+        
     </div>
+
+    <!-- Main content -->
     <div class="main-content">
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
+
         @yield('content')
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+@yield('scripts')
 </body>
 </html>

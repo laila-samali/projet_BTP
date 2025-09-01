@@ -1,40 +1,45 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
-    <h2 class="fw-bold mb-4" style="font-family: 'Montserrat', Arial, sans-serif;">Lots existants</h2>
-    <div class="card shadow-sm rounded-4 mb-5">
-        <div class="card-body">
-            <a href="{{ route('lots.create') }}" class="btn btn-primary rounded-pill px-4 mb-3 float-end">Ajouter un lot</a>
-            <div class="table-responsive">
-                <table class="table align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Description</th>
-                            <th class="text-end">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($lots as $lot)
-                        <tr>
-                            <td>{{ $lot->nom }}</td>
-                            <td>{{ $lot->description }}</td>
-                            <td class="text-end">
-                                <a href="{{ route('lots.edit', $lot) }}" class="btn btn-primary btn-sm rounded-pill px-3 me-2">Modifier</a>
-                                <form action="{{ route('lots.destroy', $lot) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-secondary btn-sm rounded-pill px-3" onclick="return confirm('Supprimer ce lot ?')">Supprimer</button>
-                                </form>
-                                <a href="{{ route('lots.show', $lot) }}" class="btn btn-link btn-sm px-2">Voir</a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+<div class="container mt-4">
+    <h2>Liste des Lots</h2>
+    <a href="{{ route('lots.create') }}" class="btn btn-primary mb-3">Ajouter un Lot</a>
+
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Devis lié</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($lots as $lot)
+                <tr>
+                    <td>{{ $lot->id }}</td>
+                    <td>{{ $lot->nom }}</td>
+                    <td>{{ $lot->description }}</td>
+                    <td>{{ $lot->devis?->client_nom ?? '-' }}</td>
+                    <td>{{ $lot->est_livre ? 'Livré' : 'Non livré' }}</td>
+                    <td>
+                        <a href="{{ route('lots.show', $lot) }}" class="btn btn-info btn-sm">Voir</a>
+                        <a href="{{ route('lots.edit', $lot) }}" class="btn btn-warning btn-sm">Modifier</a>
+                        <form action="{{ route('lots.destroy', $lot) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous supprimer ce lot ?')">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
 @endsection

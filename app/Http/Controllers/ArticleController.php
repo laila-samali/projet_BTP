@@ -3,75 +3,77 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\SousLot;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $articles = Article::all();
+        $articles = Article::with('sousLot')->get();
         return view('articles.index', compact('articles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('articles.create');
+        $sousLots = SousLot::all();
+        return view('articles.create', compact('sousLots'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'nom' => 'required|string|max:255',
+            'sous_lot_id' => 'required|exists:sous_lots,id',
+            'code' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'quantite' => 'required|integer|min:0',
+            'prix_unitaire' => 'required|numeric|min:0',
         ]);
-        Article::create($request->only('nom', 'description'));
-        return redirect()->route('articles.index')->with('success', 'Article créé avec succès.');
+
+        $request->merge([
+            'budget' => $request->quantite * $request->prix_unitaire,
+            'realisation' => 0,
+            'marge_estimee' => 0
+        ]);
+
+        Article::create($request->all());
+        return redirect()->route('articles.index')->with('success', 'Article ajouté avec succès.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Article $article)
-    {
-        return view('articles.show', compact('article'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Article $article)
     {
-        return view('articles.edit', compact('article'));
+        $sousLots = SousLot::all();
+        return view('articles.edit', compact('article', 'sousLots'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Article $article)
     {
         $request->validate([
-            'nom' => 'required|string|max:255',
+            'sous_lot_id' => 'required|exists:sous_lots,id',
+            'code' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'quantite' => 'required|integer|min:0',
+            'prix_unitaire' => 'required|numeric|min:0',
         ]);
-        $article->update($request->only('nom', 'description'));
+
+        $request->merge([
+            'budget' => $request->quantite * $request->prix_unitaire,
+        ]);
+
+        $article->update($request->all());
         return redirect()->route('articles.index')->with('success', 'Article mis à jour avec succès.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Article $article)
     {
         $article->delete();
         return redirect()->route('articles.index')->with('success', 'Article supprimé avec succès.');
     }
+    public function show(Article $article)
+{
+    // Charger le sous-lot lié pour l'affichage
+    $article->load('sousLot');
+    return view('articles.show', compact('article'));
+}
+
 }

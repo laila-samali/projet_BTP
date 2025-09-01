@@ -8,12 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('sous_lots', function (Blueprint $table) {
-            $table->id();
-            $table->string('nom');
-            $table->text('description')->nullable();
-            $table->timestamps();
-        });
+      Schema::create('sous_lots', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('lot_id')->constrained()->onDelete('cascade');
+    $table->string('nom');
+    $table->text('description')->nullable();
+    $table->timestamps();
+});
+
     }
 
     public function down(): void

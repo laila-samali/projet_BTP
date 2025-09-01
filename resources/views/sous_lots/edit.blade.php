@@ -1,35 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
-    <h2 class="fw-bold mb-4">Modifier le sous-lot</h2>
-    <div class="card shadow-sm rounded-4 mb-5">
-        <div class="card-body">
-            @if ($errors->any())
-                <div class="alert alert-danger rounded-3">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            <form action="{{ route('sous_lots.update', $sousLot) }}" method="POST" class="row g-3 align-items-center">
-                @csrf
-                @method('PUT')
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Nom du sous-lot</label>
-                    <input type="text" name="nom" value="{{ old('nom', $sousLot->nom) }}" required class="form-control rounded-pill">
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Description</label>
-                    <input type="text" name="description" value="{{ old('description', $sousLot->description) }}" class="form-control rounded-pill">
-                </div>
-                <div class="col-12 text-end mt-3">
-                    <button type="submit" class="btn btn-primary rounded-pill px-4">Mettre à jour</button>
-                </div>
-            </form>
+<div class="container mt-4">
+    <h2>Modifier Sous-lot</h2>
+    <a href="{{ route('sous_lots.index') }}" class="btn btn-secondary mb-3">Retour</a>
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
         </div>
-    </div>
+    @endif
+
+    <form action="{{ route('sous_lots.update', $sousLot) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="mb-3">
+            <label for="lot_id" class="form-label">Lot</label>
+            <select name="lot_id" class="form-select" required>
+                <option value="">-- Sélectionner un lot --</option>
+                @foreach($lots as $lot)
+                    <option value="{{ $lot->id }}" {{ old('lot_id', $sousLot->lot_id) == $lot->id ? 'selected' : '' }}>
+                        {{ $lot->nom }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="nom" class="form-label">Nom</label>
+            <input type="text" name="nom" class="form-control" value="{{ old('nom', $sousLot->nom) }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="description" class="form-control">{{ old('description', $sousLot->description) }}</textarea>
+        </div>
+        <button class="btn btn-primary">Mettre à jour</button>
+    </form>
 </div>
 @endsection
