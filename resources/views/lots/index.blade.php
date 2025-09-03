@@ -5,10 +5,6 @@
     <h2>Liste des Lots</h2>
     <a href="{{ route('lots.create') }}" class="btn btn-primary mb-3">Ajouter un Lot</a>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
     <table class="table table-bordered table-striped">
         <thead>
             <tr>

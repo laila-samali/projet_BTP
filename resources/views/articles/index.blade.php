@@ -5,10 +5,6 @@
     <h2>Liste des Articles</h2>
     <a href="{{ route('articles.create') }}" class="btn btn-primary mb-3">Ajouter un Article</a>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
     <table class="table table-bordered table-striped">
         <thead>
             <tr>

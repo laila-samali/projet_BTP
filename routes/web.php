@@ -51,7 +51,6 @@ Route::patch('devis/{devis}/concretiser', [DevisController::class, 'concretiser'
 
 // Supprimer un devis
 Route::delete('/devis/{devis}', [DevisController::class, 'destroy'])->name('devis.destroy');
-Route::delete('/devis/{devis}', [DevisController::class, 'destroy'])->name('devis.destroy');
 
 Route::patch('devis/{devis}/concretiser-upload', [DevisController::class, 'concretiserAvecUpload'])
      ->name('devis.concretiser.upload');

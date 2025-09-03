@@ -5,12 +5,6 @@
     <h1>Liste des Devis</h1>
     <a href="{{ route('devis.create') }}" class="btn btn-primary mb-3">Créer un devis</a>
 
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
     @if(session('error'))
         <div class="alert alert-danger">
             {{ session('error') }}
@@ -36,8 +30,8 @@
                 <td>{{ $devi->id }}</td>
                 <td>{{ $devi->client_nom }}</td>
                 <td>{{ $devi->client_ice }}</td>
-                <td>{{ number_format($devi->total_ht, 2) }} €</td>
-                <td>{{ number_format($devi->total_ttc, 2) }} €</td>
+                <td class="euro-value">{{ number_format($devi->total_ht, 2) }} €</td>
+                <td class="euro-value">{{ number_format($devi->total_ttc, 2) }} €</td>
                 
                 <!-- Colonne Statut (SEULEMENT l'affichage) -->
                 <td>
@@ -67,28 +61,27 @@
                     @endif
                 </td>
 
-                <!-- Colonne Actions (AVEC le bouton Concrétiser) -->
-                <td>
-                    <a href="{{ route('devis.show', $devi->id) }}" class="btn btn-info btn-sm">Voir</a>
-                    <a href="{{ route('devis.edit', $devi->id) }}" class="btn btn-warning btn-sm">Modifier</a>
-                    
-                    @if($devi->statut != 'Concrétisé')
-                    <!-- BOUTON CONCRÉTISER DANS LA COLONNE ACTIONS -->
-                    <button type="button" class="btn btn-success btn-sm" 
-                            data-bs-toggle="modal" data-bs-target="#uploadModal{{ $devi->id }}">
-                        Concrétiser
-                    </button>
-                    @endif
-
-                    <form action="{{ route('devis.destroy', $devi->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" 
-                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">
-                            Supprimer
-                        </button>
-                    </form>
-                </td>
+                    <!-- Colonne Actions (AVEC le bouton Concrétiser et Supprimer alignés) -->
+                    <td style="min-width: 260px;">
+                        <div class="devis-actions">
+                            <a href="{{ route('devis.show', $devi->id) }}" class="btn btn-info btn-sm">Voir</a>
+                            <a href="{{ route('devis.edit', $devi->id) }}" class="btn btn-warning btn-sm">Modifier</a>
+                            @if($devi->statut != 'Concrétisé')
+                            <button type="button" class="btn btn-success btn-sm" 
+                                    data-bs-toggle="modal" data-bs-target="#uploadModal{{ $devi->id }}">
+                                Concrétiser
+                            </button>
+                            @endif
+                            <form action="{{ route('devis.destroy', $devi->id) }}" method="POST" style="display:inline; margin:0;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm" 
+                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">
+                                    Supprimer
+                                </button>
+                            </form>
+                        </div>
+                    </td>
             </tr>
 
             <!-- Modal pour l'upload du bon de commande -->
