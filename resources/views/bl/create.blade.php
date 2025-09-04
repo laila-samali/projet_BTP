@@ -82,7 +82,6 @@
                         @endforeach
                         </tbody>
                     </table>
-                    <small class="text-muted">Un lot ne peut être ajouté qu’une seule fois. Retirez-le de la liste de droite pour le réactiver ici.</small>
                 </div>
 
                 <!-- Lots à livrer -->

@@ -1,61 +1,162 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel – README
+Application Laravel (v12.22.1) utilisant MySQL, Vite/Tailwind pour le front, et des files d’attente via la connexion “database”.
+## Fonctionnalités principales
+- Backend Laravel 12 avec PHP 8.2
+- Base de données MySQL
+- Files d’attente (queue) via la base de données
+- Front-end avec Vite et Tailwind CSS
+- Tests avec PHPUnit
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Prérequis
+- PHP 8.2+
+- Composer 2.x
+- MySQL 8.x (ou compatible)
+- Node.js 18+ et npm
+- Optionnel: Docker + Docker Compose (Laravel Sail)
 
-## About Laravel
+## Installation
+1. Cloner le dépôt
+``` bash
+git clone <url-du-repo>
+cd <dossier-du-projet>
+```
+1. Installer les dépendances PHP
+``` bash
+composer install
+```
+1. Installer les dépendances Node
+``` bash
+npm install
+```
+1. Créer le fichier d’environnement
+``` bash
+cp .env.example .env
+php artisan key:generate
+```
+1. Configurer la base de données dans .env
+``` dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=secret
+```
+1. Configurer la file d’attente (database)
+``` dotenv
+QUEUE_CONNECTION=database
+```
+1. Migrations (et tables de queue)
+``` bash
+php artisan queue:table
+php artisan migrate
+```
+1. (Optionnel) Données de démo
+``` bash
+php artisan db:seed
+```
+## Lancement en développement
+- Démarrer le serveur Laravel
+``` bash
+php artisan serve
+```
+- Démarrer Vite (front)
+``` bash
+npm run dev
+```
+- Démarrer le worker de file d’attente
+``` bash
+php artisan queue:work
+```
+Astuce: exécuter les trois en parallèle (si vous le souhaitez) avec un gestionnaire de terminaux ou le package “concurrently”.
+## Compilation front
+- Développement avec HMR:
+``` bash
+npm run dev
+```
+- Build de production:
+``` bash
+npm run build
+```
+## Tests
+- Exécuter la suite PHPUnit:
+``` bash
+php artisan test
+# ou
+vendor/bin/phpunit
+```
+## Utilisation avec Docker (Laravel Sail)
+1. Installer Sail (si nécessaire)
+``` bash
+php artisan sail:install
+```
+1. Démarrer les services
+``` bash
+./vendor/bin/sail up -d
+```
+1. Exécuter les commandes via Sail
+``` bash
+./vendor/bin/sail php artisan migrate
+./vendor/bin/sail npm run dev
+./vendor/bin/sail php artisan queue:work
+```
+## Variables d’environnement recommandées
+- Application
+``` dotenv
+APP_NAME="Laravel"
+APP_ENV=local
+APP_KEY=base64:...
+APP_DEBUG=true
+APP_URL=http://localhost
+```
+- Base de données
+``` dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=secret
+```
+- Files d’attente
+``` dotenv
+QUEUE_CONNECTION=database
+```
+- Cache/Session (exemples)
+``` dotenv
+CACHE_DRIVER=file
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+```
+## Journalisation
+- Basée sur Monolog. Configurable via le canal “stack” et APP_ENV/LOG_CHANNEL/LOG_LEVEL dans .env.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Déploiement (aperçu rapide)
+- Construire les assets:
+``` bash
+npm ci
+npm run build
+```
+- Dépendances et optimisations:
+``` bash
+composer install --no-dev --optimize-autoloader
+php artisan migrate --force
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+- Lancer le worker:
+``` bash
+php artisan queue:work --daemon --stop-when-empty
+# ou superviser via Supervisor/Systemd
+```
+## Dépannage
+- Problèmes d’autorisations (stockage/cache):
+``` bash
+php artisan storage:link
+chmod -R 775 storage bootstrap/cache
+```
+- Erreurs de cache en dev:
+``` bash
+php artisan optimize:clear
+```
