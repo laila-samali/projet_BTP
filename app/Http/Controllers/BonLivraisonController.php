@@ -21,7 +21,7 @@ class BonLivraisonController extends Controller
         return view('bl.index', compact('bls', 'devis', 'lotsNonLivres'));
     }
 
-    public function create(Request $request)
+    public function create()
     {
         $devis = Devis::all();
         $lotsNonLivres = Lot::where('est_livre', false)->get();
@@ -65,7 +65,7 @@ class BonLivraisonController extends Controller
             $lot->est_livre = true;
             $lot->save();
         }
-        dd($bls);
+
         // Rediriger vers la liste des BLs avec un message de succès
         return redirect()->route('bl.index')
             ->with('success', 'Bon de livraison créé avec succès. N° ' . $bl->numero_bl);
