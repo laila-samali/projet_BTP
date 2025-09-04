@@ -13,6 +13,7 @@
             background: #f4f6fa;
             font-family: 'Montserrat', Arial, sans-serif;
         }
+
         .sidebar {
             width: 260px;
             background: #18477b;
@@ -22,8 +23,9 @@
             left: 0;
             top: 0;
             padding: 30px 0 0 0;
-            box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
         }
+
         .sidebar h2 {
             font-size: 1.35rem;
             font-weight: bold;
@@ -31,14 +33,17 @@
             margin-left: 20px;
             letter-spacing: 1px;
         }
+
         .sidebar ul {
             list-style: none;
             padding: 0;
             margin-left: 30px;
         }
+
         .sidebar ul li {
             margin-bottom: 10px;
         }
+
         .sidebar ul li span {
             font-size: 1.15rem;
             font-weight: bold;
@@ -46,13 +51,16 @@
             margin-bottom: 10px;
             display: block;
         }
+
         .sidebar .submenu {
             margin-left: 20px;
             margin-top: 5px;
         }
+
         .sidebar .submenu li {
             margin-bottom: 10px;
         }
+
         .sidebar ul li a {
             color: #fff;
             text-decoration: none;
@@ -63,12 +71,14 @@
             transition: background 0.2s, color 0.2s;
             display: block;
         }
+
         .sidebar ul li a.active,
         .sidebar ul li a:hover {
             background: #2e5fa7;
             color: #fff;
             text-decoration: none;
         }
+
         .main-content {
             margin-left: 260px;
             padding: 40px 30px;
@@ -78,74 +88,76 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>Module CRM</h2>
-        <ul>
-            <li>
-               
-                <ul class="submenu">
-                     <span>Paramétrage</span>
-                    <li>
-                        <a href="{{ route('lots.index') }}" class="{{ request()->routeIs('lots.*') ? 'active' : '' }}">
-                            Lots
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('sous_lots.index') }}" class="{{ request()->routeIs('sous_lots.*') ? 'active' : '' }}">
-                            Sous Lots
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('articles.index') }}" class="{{ request()->routeIs('articles.*') ? 'active' : '' }}">
-                            Articles
-                        </a>
-                    </li>
-   <li>
-     <span>ventes</span>
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2>Module CRM</h2>
+    <ul>
+        <li>
+
+            <ul class="submenu">
+                <span>Paramétrage</span>
+                <li>
+                    <a href="{{ route('lots.index') }}" class="{{ request()->routeIs('lots.*') ? 'active' : '' }}">
+                        Lots
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('sous_lots.index') }}"
+                       class="{{ request()->routeIs('sous_lots.*') ? 'active' : '' }}">
+                        Sous Lots
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('articles.index') }}"
+                       class="{{ request()->routeIs('articles.*') ? 'active' : '' }}">
+                        Articles
+                    </a>
+                </li>
+                <li>
+                    <span>Ventes</span>
                     <a href="{{route('devis.index')}}" class="{{ request()->routeIs('devis.*') ? 'active' : '' }}">
                         Devis
                     </a>
                 </li>
-                   <li>
-                    <a href="{{ route('bl.create') }}" 
-                class="nav-link {{ request()->routeIs('bl.*') ? 'active' : '' }}">
-                    <i class="fas fa-truck-loading"></i> Bons de Livraison
-                </a>
+                <li>
+                    <a href="{{ route('bl.index') }}"
+                       class="nav-link {{ request()->routeIs('bl.*') ? 'active' : '' }}">
+                        <i class="fas fa-truck-loading"></i> Bons de Livraison
+                    </a>
                 </li>
                 <li>
-                    <a href="{{ route('factures.index') }}" 
-                class="nav-link {{ request()->routeIs('factures.*') ? 'active' : '' }}">
-                    <i class="fas fa-file-invoice-dollar"></i> Factures
-                </a>
+                    <a href="{{ route('factures.index') }}"
+                       class="nav-link {{ request()->routeIs('factures.*') ? 'active' : '' }}">
+                        <i class="fas fa-file-invoice-dollar"></i> Factures
+                    </a>
                 </li>
                 <li>
-                    <a href="{{ route('paiements.index') }}" 
-                class="nav-link {{ request()->routeIs('paiements.*') ? 'active' : '' }}">
-                    <i class="fas fa-money-bill-wave"></i> Paiements
-                </a>
+                    <a href="{{ route('paiements.index') }}"
+                       class="nav-link {{ request()->routeIs('paiements.*') ? 'active' : '' }}">
+                        <i class="fas fa-money-bill-wave"></i> Paiements
+                    </a>
                 </li>
-                
-                </ul>
-                 </li>
-            
-        </ul>
-        
-    </div>
 
-    <!-- Main content -->
-    <div class="main-content">
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+            </ul>
+        </li>
 
-        @yield('content')
-    </div>
+    </ul>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</div>
+
+<!-- Main content -->
+<div class="main-content">
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @yield('content')
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 @yield('scripts')
 </body>
 </html>
