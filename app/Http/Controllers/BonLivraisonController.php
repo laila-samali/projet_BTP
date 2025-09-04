@@ -68,13 +68,9 @@ class BonLivraisonController extends Controller
             $lot->save();
         }
 
-<<<<<<< HEAD
         // Rediriger vers la liste des BLs avec un message de succès
-        return redirect()->route('bl.index')
-=======
         return redirect()
             ->route('bl.index')
->>>>>>> f942a069c7a503b2758379775036ff81389b12c6
             ->with('success', 'Bon de livraison créé avec succès. N° ' . $bl->numero_bl);
     }
 
