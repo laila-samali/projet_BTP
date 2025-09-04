@@ -1,6 +1,5 @@
 <?php
 
-// app/Models/BonLivraison.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class BonLivraison extends Model
 {
     use HasFactory;
-    
-    protected $table = 'bons_livraison';
+
+    protected $table = 'bon_livraisons';
 
     protected $fillable = [
         'numero_bl',
@@ -32,7 +31,7 @@ class BonLivraison extends Model
     public function lots()
     {
         return $this->belongsToMany(Lot::class, 'bl_lots')
-                    ->withPivot('quantite_livree')
-                    ->withTimestamps();
+             ->withPivot('quantite_livree')
+             ->withTimestamps();
     }
 }

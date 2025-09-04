@@ -83,7 +83,7 @@
         <h2>Module CRM</h2>
         <ul>
             <li>
-               
+
                 <ul class="submenu">
                      <span>Paramétrage</span>
                     <li>
@@ -108,29 +108,29 @@
                     </a>
                 </li>
                    <li>
-                    <a href="{{ route('bl.create') }}" 
+                    <a href="{{ route('bl.index') }}"
                 class="nav-link {{ request()->routeIs('bl.*') ? 'active' : '' }}">
                     <i class="fas fa-truck-loading"></i> Bons de Livraison
                 </a>
                 </li>
                 <li>
-                    <a href="{{ route('factures.index') }}" 
+                    <a href="{{ route('factures.index') }}"
                 class="nav-link {{ request()->routeIs('factures.*') ? 'active' : '' }}">
                     <i class="fas fa-file-invoice-dollar"></i> Factures
                 </a>
                 </li>
                 <li>
-                    <a href="{{ route('paiements.index') }}" 
+                    <a href="{{ route('paiements.index') }}"
                 class="nav-link {{ request()->routeIs('paiements.*') ? 'active' : '' }}">
                     <i class="fas fa-money-bill-wave"></i> Paiements
                 </a>
                 </li>
-                
+
                 </ul>
                  </li>
-            
+
         </ul>
-        
+
     </div>
 
     <!-- Main content -->

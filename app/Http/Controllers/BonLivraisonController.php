@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BonLivraison;
 use App\Models\Devis;
 use App\Models\Lot;
-use App\Models\BlLot;
+// use App\Models\BlLot; // plus nécessaire si on utilise attach()
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -13,11 +13,13 @@ class BonLivraisonController extends Controller
 {
     public function index()
     {
-        $bls = BonLivraison::with('devis', 'lots.lot')
-            ->orderBy('created_at', 'desc')
+        $bls = BonLivraison::with(['devis', 'lots'])
+        ->orderBy('created_at', 'desc')
             ->get();
+
         $devis = Devis::all();
         $lotsNonLivres = Lot::where('est_livre', false)->get();
+
         return view('bl.index', compact('bls', 'devis', 'lotsNonLivres'));
     }
 
@@ -25,13 +27,14 @@ class BonLivraisonController extends Controller
     {
         $devis = Devis::all();
         $lotsNonLivres = Lot::where('est_livre', false)->get();
+
         return view('bl.create', compact('devis', 'lotsNonLivres'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'numero_bl' => 'required|unique:bons_livraison',
+            'numero_bl' => 'required|unique:bon_livraisons,numero_bl',
             'devis_id' => 'required|exists:devis,id',
             'client_nom' => 'required|string',
             'client_adresse' => 'required|string',
@@ -54,10 +57,9 @@ class BonLivraisonController extends Controller
             'statut' => 'Livré',
         ]);
 
+        // Attacher les lots avec la quantité livrée via la relation
         foreach ($request->lots as $lotData) {
-            BlLot::create([
-                'bl_id' => $bl->id,
-                'lot_id' => $lotData['id'],
+            $bl->lots()->attach($lotData['id'], [
                 'quantite_livree' => $lotData['quantite_livree'],
             ]);
 
@@ -65,28 +67,32 @@ class BonLivraisonController extends Controller
             $lot->est_livre = true;
             $lot->save();
         }
-        dd($bls);
-        // Rediriger vers la liste des BLs avec un message de succès
-        return redirect()->route('bl.index')
+
+        return redirect()
+            ->route('bl.index')
             ->with('success', 'Bon de livraison créé avec succès. N° ' . $bl->numero_bl);
     }
 
-    public function show($id)
+    public function show(BonLivraison $bl)
     {
-        $bl = BonLivraison::with('lots.lot')->findOrFail($id);
+        $bl->load(['lots', 'devis']);
         return view('bl.show', compact('bl'));
     }
 
     public function generatePdf(BonLivraison $bl)
     {
-        $bl->load('lots.lot', 'devis');
+        $bl->load(['lots', 'devis']);
         $pdf = Pdf::loadView('bl.pdf', ['bl' => $bl]);
+
         return $pdf->download('Bon_de_livraison_' . $bl->numero_bl . '.pdf');
     }
 
     public function getLotsNonLivres($devis_id)
     {
-        $lots = Lot::where('devis_id', $devis_id)->where('est_livre', false)->get();
+        $lots = Lot::where('devis_id', $devis_id)
+            ->where('est_livre', false)
+            ->get();
+
         return response()->json($lots);
     }
 
@@ -95,6 +101,7 @@ class BonLivraisonController extends Controller
         $lot = Lot::findOrFail($request->lot_id);
         $lot->est_livre = true;
         $lot->save();
+
         return response()->json(['success' => true]);
     }
 }
